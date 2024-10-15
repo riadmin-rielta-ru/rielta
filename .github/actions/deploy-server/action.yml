@@ -69,5 +69,6 @@ runs:
             docker compose rm ${{ inputs.feature }}-${{ inputs.service }}
             docker pull cr.yandex/${{ inputs.CR_REGISTRY }}/${{ inputs.CR_REPOSITORY }}:${{ inputs.IMAGE_TAG }}
             export SERVER_VERSION=${{ inputs.IMAGE_TAG }}
+            echo $SERVER_VERSION
             SERVER_VERSION=$SERVER_VERSION docker compose up -d --no-deps ${{ inputs.feature }}-${{ inputs.service }}
             docker image prune -a -f                
