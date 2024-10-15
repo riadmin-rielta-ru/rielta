@@ -1,0 +1,65 @@
+name: 'get name feature'
+description: 'build server image'
+
+inputs:
+  ref:
+      description: "name of branch"
+      required: false
+  feature:
+      description: "inpute name feature"
+      required: false
+
+outputs:
+  name_feature:
+    description: "name feature"
+    value: ${{ steps.name_feature.outputs.name_feature }}
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Build, tag, and push image to Yandex Cloud Container Registry
+          id: name_feature
+          shell: bash
+          run: |
+            if [[ ${{ input.ref }} == *"feature-01"* || "${{ inputs.feature }}" == *"feature-01"* ]]; then
+            echo "name_feature=feature-01" >> "$GITHUB_OUTPUT"
+
+            elif [[ ${{ input.ref }} == *"feature-02"* || "${{ inputs.feature }}" == *"feature-02"* ]]; then
+            echo "name_feature=feature-02" >> "$GITHUB_OUTPUT"
+
+            elif [[ ${{ input.ref }} == *"feature-03"* || "${{ inputs.feature }}" == *"feature-03"* ]]; then
+            echo "name_feature=feature-03" >> "$GITHUB_OUTPUT"      
+  
+            elif [[ ${{ input.ref }} == *"feature-04"* || "${{ inputs.feature }}" == *"feature-04"* ]]; then
+            echo "name_feature=feature-04" >> "$GITHUB_OUTPUT"
+          
+            elif [[ ${{ input.ref }} == *"feature-05"* || "${{ inputs.feature }}" == *"feature-05"* ]]; then
+            echo "name_feature=feature-05" >> "$GITHUB_OUTPUT"
+          
+            elif [[ ${{ input.ref }} == *"feature-06"* || "${{ inputs.feature }}" == *"feature-06"* ]]; then
+            echo "name_feature=feature-06" >> "$GITHUB_OUTPUT"          
+
+            elif [[ ${{ input.ref }} == *"feature-07"* || "${{ inputs.feature }}" == *"feature-07"* ]]; then
+            echo "name_feature=feature-07" >> "$GITHUB_OUTPUT"          
+
+            elif [[ ${{ input.ref }} == *"feature-08"* || "${{ inputs.feature }}" == *"feature-08"* ]]; then
+            echo "name_feature=feature-08" >> "$GITHUB_OUTPUT"          
+
+            elif [[ ${{ input.ref }} == *"feature-09"* || "${{ inputs.feature }}" == *"feature-09"* ]]; then
+            echo "name_feature=feature-09" >> "$GITHUB_OUTPUT"          
+          
+            elif [[ ${{ input.ref }} == *"feature-10"* || "${{ inputs.feature }}" == *"feature-10"* ]]; then
+            echo "name_feature=feature-10" >> "$GITHUB_OUTPUT"          
+          
+            elif [[ ${{ input.ref }} == *"feature-11"* || "${{ inputs.feature }}" == *"feature-11"* ]]; then
+            echo "name_feature=feature-11" >> "$GITHUB_OUTPUT"          
+
+            elif [[ ${{ input.ref }} == *"feature-12"* || "${{ inputs.feature }}" == *"feature-12"* ]]; then
+            echo "name_feature=feature-12" >> "$GITHUB_OUTPUT"          
+
+            else
+              echo "Нет ни одной походящей ветки."
+              exit 1
+
+            fi
+
