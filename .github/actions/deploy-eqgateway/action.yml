@@ -1,0 +1,48 @@
+name: 'build and push EQGATEWAY docker image'
+description: 'build EQGATEWAY image'
+inputs:
+    service:
+        description: "service name"
+        required: false
+        default: 'eqgateway'
+    feature:
+        description: "environment for deploy"
+        required: true
+        default: 'dev'
+    IMAGE_TAG:
+        description: "version build soft"
+        required: true
+        default: 'latest'
+    DB_PASSWORD:
+        description: 'db pasword'
+        required: true
+    QUEUE_PASSWORD:
+        description: 'QUEUE_PASSWORD'
+        required: true
+    DEV_SERVER_1:
+        description: 'url сервера'
+        required: true
+        default: 'dev.ridom.ru'
+    CR_REGISTRY:
+        description: 'yandex id container registry'
+        required: true
+    CR_REPOSITORY:
+        description: 'yandex id container '
+        required: true
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Build, tag, and push image to Yandex Cloud Container Registry
+          shell: bash
+          run: |
+            echo "DB_PASSWORD = ${{ inputs.DB_PASSWORD }}" >> ./database.env 
+            echo "QUEUE_PASSWORD = ${{ inputs.QUEUE_PASSWORD }}" >> ./rabbitmq.env
+            docker context create remote --docker "host=ssh://dev-docker@${{ inputs.DEV_SERVER_1 }}"
+            docker context use remote
+            docker compose stop ${{ inputs.feature }}-${{ inputs.service }}
+            docker compose rm ${{ inputs.feature }}-${{ inputs.service }}
+            docker pull cr.yandex/${{ inputs.CR_REGISTRY }}/${{ inputs.CR_REPOSITORY }}:${{ inputs.IMAGE_TAG }}
+            export SERVER_VERSION=${{ inputs.IMAGE_TAG }}
+            SERVER_VERSION=$SERVER_VERSION docker compose up -d --no-deps ${{ inputs.feature }}-${{ inputs.service }}
+            docker image prune -a -f                
