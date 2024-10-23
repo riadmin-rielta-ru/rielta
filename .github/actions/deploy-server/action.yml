@@ -72,4 +72,4 @@ runs:
             echo $SERVER_VERSION
             SERVER_VERSION=${{ inputs.IMAGE_TAG }} docker compose up -d --no-deps ${{ inputs.feature }}-${{ inputs.service }}
             docker image prune -a -f        
-            docker context rm remote         
+            docker context rm -f remote         
